@@ -9,6 +9,6 @@ namespace UserManagementDummy.Models
         public string Name { get; set; }
         public string Permissions { get; set; }
 
-        public List<UserRole> UserRoles { get; set; } = new List<UserRole>();
+       public List<UserRole> UserRoles { get; set; } = new List<UserRole>();
     }
 }

@@ -7,7 +7,8 @@ namespace UserManagementDummy.Data
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
-
+            
         }
+        public DbSet<UserRole> UserRols { get; set; }
     }
 }

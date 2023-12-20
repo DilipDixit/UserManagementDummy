@@ -13,9 +13,5 @@ namespace UserManagementDummy.Models
 
         public List<UserRole> UserRoles { get; set; } = new List<UserRole>();
 
-
-
-
-       
-    }
+}
 }

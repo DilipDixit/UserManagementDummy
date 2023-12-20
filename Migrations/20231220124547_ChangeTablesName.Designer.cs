@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UserManagementDummy.Data;
 
@@ -10,9 +11,10 @@ using UserManagementDummy.Data;
 namespace UserManagementDummy.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20231220124547_ChangeTablesName")]
+    partial class ChangeTablesName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,7 +93,7 @@ namespace UserManagementDummy.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("UserRole");
+                    b.ToTable("UserRol");
                 });
 
             modelBuilder.Entity("UserManagementDummy.Models.UserRole", b =>

@@ -2,7 +2,7 @@
 
 namespace UserManagementDummy.Models
 {
-    public class user
+    public class User
     {
         
         public int ID { get; set; }

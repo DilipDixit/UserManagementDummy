@@ -10,9 +10,9 @@ namespace UserManagementDummy.Data
             
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<UserRole> UserRols { get; set; }
-        public DbSet<Role> Roles { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<UserRole> UserRole { get; set; }
+        public DbSet<Role> Role { get; set; }
 
     }
 }

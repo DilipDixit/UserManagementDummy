@@ -27,19 +27,22 @@ namespace UserManagementDummy.Controllers
         [HttpGet("{Id}")]
         public async Task<ActionResult<UserRole>> GetUserRoleByID(int Id)
         {
-            var data = await context.UserRoles.SingleOrDefaultAsync(x=>x.ID==Id);
+            var data = await context.UserRoles.Where(x => x.ID == Id).Where(x => x.IsDeleted==false).SingleOrDefaultAsync();
             if (data == null)
             {
-                return NotFound($"Error : There is no record with UserRoleID: {Id}" );
+                return NotFound($"Error: There is no non-deleted record with UserRoleID: {Id}");
             }
+
             return Ok(data);
         }
+
+
         [HttpPost]
         public async Task<ActionResult<UserRole>> AddUserRole(UserRole userRole)
         {
             if (userRole == null)
             {
-                return BadRequest("Error: User role data should not be null");
+                return BadRequest("Error: Invalid request data");
             }
 
             if (userRole.RoleID == 0)
@@ -67,7 +70,7 @@ namespace UserManagementDummy.Controllers
         {
             if (roleId == 0)
             {
-                return BadRequest("Error: RoleId should not be zero.");
+                return BadRequest("Error: Invalid roleId");
             }
 
             var existingUserRole = await context.UserRoles.FindAsync(Id);
@@ -93,7 +96,12 @@ namespace UserManagementDummy.Controllers
 
             if (userRoleToDelete == null)
             {
-                return NotFound($"Error: There is no record with UserRoleID: {Id}");
+                return NotFound($"Error: No record found with UserRoleID: {Id}");
+            }
+
+            if ((bool)userRoleToDelete.IsDeleted)
+            {
+                return BadRequest($"Error: The record with UserRoleID {Id} has already been deleted.");
             }
 
             userRoleToDelete.IsDeleted = true;
@@ -105,8 +113,6 @@ namespace UserManagementDummy.Controllers
 
             return Ok(userRoleToDelete);
         }
-
-
 
     }
 }

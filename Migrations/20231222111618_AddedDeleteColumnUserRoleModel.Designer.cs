@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UserManagementDummy.Data;
 
@@ -11,9 +12,10 @@ using UserManagementDummy.Data;
 namespace UserManagementDummy.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20231222111618_AddedDeleteColumnUserRoleModel")]
+    partial class AddedDeleteColumnUserRoleModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,13 +32,6 @@ namespace UserManagementDummy.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<DateTime>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DeletedFromIpAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -44,9 +39,6 @@ namespace UserManagementDummy.Migrations
                     b.Property<string>("Permissions")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
 
                     b.HasKey("ID");
 

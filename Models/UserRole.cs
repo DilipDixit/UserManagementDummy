@@ -11,8 +11,8 @@ namespace UserManagementDummy.Models
 
         public int RoleID { get; set; }
         //  public Role Role { get; set; } = null!;
-        public bool IsDeleted { get; set; }
+        public bool? IsDeleted { get; set; }
         public DateTime? DeletedAt { get; set; }
-        public string DeletedFromIpAddress { get; set; }
+        public string? DeletedFromIpAddress { get; set; }
     }
 }

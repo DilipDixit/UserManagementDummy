@@ -21,7 +21,7 @@ namespace UserManagementDummy.Controllers
         [HttpGet]
         public async Task<IEnumerable<UserRole>> GetUserRoles()
         {
-            var data = await context.UserRoles.Where(ur => !ur.IsDeleted).ToListAsync();
+            var data = await context.UserRoles.Where(ur => (bool)!ur.IsDeleted).ToListAsync();
             return data;
         }
         [HttpGet("{Id}")]

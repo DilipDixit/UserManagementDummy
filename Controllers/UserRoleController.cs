@@ -5,11 +5,14 @@ using UserManagementDummy.Data;
 using Microsoft.EntityFrameworkCore;
 using UserManagementDummy.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace UserManagementDummy.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+
     public class UserRoleController : ControllerBase
     {
         private readonly ApplicationContext context;

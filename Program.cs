@@ -22,17 +22,19 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
+    var configuration = builder.Configuration;
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = configuration["https://localhost:7005"],
-        ValidAudience = configuration["https://localhost:7005"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("{93AB4919-B30D-4F1A-AFAE-EB78F8DB3325}"))
+        ValidIssuer = configuration["Jwt:ValidIssuer"],
+        ValidAudience = configuration["Jwt:ValidAudience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]))
     };
 });
+
 
 var app = builder.Build();
 
@@ -44,6 +46,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

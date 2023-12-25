@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
-
-namespace UserManagementDummy.Models
+﻿namespace UserManagementDummy.Models
 {
     public class UserRole
     {

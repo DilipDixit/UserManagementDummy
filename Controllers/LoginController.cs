@@ -54,7 +54,8 @@ namespace UserManagementDummy.Controllers
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.FirstName.ToString()),
-                    new Claim(ClaimTypes.Email, user.Email.ToString())
+
+                    new Claim(ClaimTypes.Email,user.Email.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -65,9 +66,11 @@ namespace UserManagementDummy.Controllers
             return Ok(new { user, Token = tokenString });
         }
 
+        #region validate password
         private bool ValidatePassword(User user, string password)
         {
             return user.Password == password;
         }
+        #endregion
     }
 }

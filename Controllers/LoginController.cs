@@ -26,7 +26,7 @@ namespace UserManagementDummy.Controllers
             this.context = context;
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<ActionResult<User>> Login(int? id, string password)
         {
             if (!id.HasValue || string.IsNullOrEmpty(password))
@@ -34,7 +34,6 @@ namespace UserManagementDummy.Controllers
                 return BadRequest("Invalid input. Both ID and password are required.");
             }
 
-            // Fetch the user from the database based on the provided ID
             var user = await context.Users.Where(u => u.ID == id).FirstOrDefaultAsync();
 
             if (user == null)
@@ -47,14 +46,13 @@ namespace UserManagementDummy.Controllers
                 return Unauthorized("Invalid password.");
             }
 
-            // If authentication is successful, generate a JWT token
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = new byte[32];
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.ID.ToString()),
+                    new Claim(ClaimTypes.Name, user.FirstName.ToString()),
                     new Claim(ClaimTypes.Email,user.Email.ToString())
                     
                 }),
@@ -64,14 +62,15 @@ namespace UserManagementDummy.Controllers
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
 
-            // Return the authenticated user along with the JWT token
             return Ok(new { user, Token = tokenString });
         }
 
+        #region validate password
         private bool ValidatePassword(User user, string password)
         {
             // for password validation using a secure password hashing algorithm either bcrypt or Argon2
             return user.Password == password; 
         }
+        #endregion
     }
 }

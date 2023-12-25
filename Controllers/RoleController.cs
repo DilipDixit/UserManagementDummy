@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore; // Use EF Core namespace
+using Microsoft.EntityFrameworkCore;
 using UserManagementDummy.Data;
 using UserManagementDummy.Models;
 

@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-//using System.Data.Entity;
 using UserManagementDummy.Data;
 using Microsoft.EntityFrameworkCore;
 using UserManagementDummy.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 
 namespace UserManagementDummy.Controllers

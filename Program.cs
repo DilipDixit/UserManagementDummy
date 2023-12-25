@@ -30,7 +30,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = configuration["https://localhost:7005"],
         ValidAudience = configuration["https://localhost:7005"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("my-secret-key"))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("{93AB4919-B30D-4F1A-AFAE-EB78F8DB3325}"))
     };
 });
 

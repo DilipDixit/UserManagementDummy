@@ -24,18 +24,18 @@ namespace UserManagementDummy.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> Login(int? id, string password)
+        public async Task<ActionResult<User>> Login(string email, string password)
         {
-            if (!id.HasValue || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
                 return BadRequest("Invalid input. Both ID and password are required.");
             }
 
-            var user = await context.Users.Where(u => u.ID == id).FirstOrDefaultAsync();
+            var user = await context.Users.Where(u => u.Email== email).FirstOrDefaultAsync();
 
             if (user == null)
             {
-                return NotFound($"User with ID {id} not found.");
+                return NotFound($"User with ID {email} not found.");
             }
 
             if (!ValidatePassword(user, password))

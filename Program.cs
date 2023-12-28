@@ -6,7 +6,8 @@ using System;
 using System.Text;
 using UserManagementDummy.Data;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);//System.IO.InvalidDataException: 'Failed to load configuration from file 'C:\Projects\UserManagementDummy\appsettings.json'.'
+
 
 // Jwt configuration starts here
 var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>() ?? "defaultIssuer";
@@ -60,7 +61,6 @@ builder.Services.AddSwaggerGen(opt =>
     });
 });
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("dbcs")));
-
 
 var app = builder.Build();
 

@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 using UserManagementDummy.Data;
 using UserManagementDummy.Models;
 
@@ -17,10 +18,12 @@ namespace UserManagementDummy.Controllers
     public class LoginController : ControllerBase
     {
         private readonly ApplicationContext context;
+        private IConfiguration _config;
 
-        public LoginController(ApplicationContext context)
+        public LoginController(ApplicationContext context, IConfiguration config)
         {
             this.context = context;
+            _config = config;
         }
 
         [HttpPost]
@@ -43,27 +46,18 @@ namespace UserManagementDummy.Controllers
                 return Unauthorized("Invalid password.");
             }
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = new byte[32];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(key);
-            }
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, user.FirstName.ToString()),
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:SecretKey"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-                    new Claim(ClaimTypes.Email,user.Email.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
+            var Sectoken = new JwtSecurityToken(_config["Jwt:Issuer"],
+              _config["Jwt:Issuer"],
+              null,
+              expires: DateTime.Now.AddMinutes(120),
+              signingCredentials: credentials);
 
-            return Ok(new { user, Token = tokenString });
+            var token = new JwtSecurityTokenHandler().WriteToken(Sectoken);
+
+            return Ok(token);
         }
 
         #region validate password

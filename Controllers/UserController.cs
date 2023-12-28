@@ -54,24 +54,32 @@ namespace Prac.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
-
-            var exitingUser = await _context.Users.FindAsync(id);
             if (user == null)
+            {
+                return BadRequest();
+            }
+
+            var existingUser = await _context.Users.FindAsync(id);
+            if (existingUser == null)
             {
                 return NotFound();
             }
-            exitingUser.FirstName=user.FirstName;
-            exitingUser.LastName=user.LastName;
-            exitingUser.Email=user.Email;
-            exitingUser.Password=user.Password;
+
+            existingUser.FirstName = user.FirstName;
+            existingUser.LastName = user.LastName;
+            existingUser.Email = user.Email;
+            existingUser.Password = user.Password;
+
             await _context.SaveChangesAsync();
             return NoContent();
         }
 
+
         private bool UserExists(int id)
         {
-            throw new NotImplementedException();
+            return _context.Users.Any(e => e.ID == id);
         }
+
 
         //Delete
         [HttpDelete("{id}")]

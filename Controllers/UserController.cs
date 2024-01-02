@@ -13,16 +13,19 @@ namespace Prac.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ApplicationContext _context;
+        private readonly ILogger<UsersController> logger;
 
-        public UsersController(ApplicationContext context)
+        public UsersController(ApplicationContext context,ILogger<UsersController>logger)
         {
             _context = context;
+            this.logger = logger;
         }
 
         // GET: api/Users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
+            logger.LogInformation("all the User are gettings");
             return await _context.Users.ToListAsync();
         }
 
@@ -34,6 +37,7 @@ namespace Prac.Controllers
 
             if (user == null)
             {
+                logger.LogWarning("User with ID: {UserId} not found.", id);
                 return NotFound();
             }
 
@@ -43,7 +47,7 @@ namespace Prac.Controllers
         public async Task<ActionResult<User>> PostUser(User user)
         {
 
-
+            logger.LogInformation("Create the new User");
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return NoContent();
@@ -54,6 +58,7 @@ namespace Prac.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
+            logger.LogInformation("Invalid data provided to this id");
             if (user == null)
             {
                 return BadRequest();
@@ -85,6 +90,7 @@ namespace Prac.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
+            logger.LogInformation("Deleted the User");
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {

@@ -2,12 +2,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
+using Serilog;
 using System.Text;
 using UserManagementDummy.Data;
 
-var builder = WebApplication.CreateBuilder(args);//System.IO.InvalidDataException: 'Failed to load configuration from file 'C:\Projects\UserManagementDummy\appsettings.json'.'
-
+var builder = WebApplication.CreateBuilder(args);
 
 // Jwt configuration starts here
 var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>() ?? "defaultIssuer";
@@ -23,13 +22,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             ValidIssuer = jwtIssuer,
-            ValidAudience = jwtIssuer,  // Note: Replace with ValidAudience if it's a different value
+            ValidAudience = jwtIssuer,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
         };
     });
 // Jwt configuration ends here
 
-// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
@@ -60,6 +58,13 @@ builder.Services.AddSwaggerGen(opt =>
         }
     });
 });
+
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+builder.Host.UseSerilog();
+
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("dbcs")));
 
 var app = builder.Build();

@@ -9,7 +9,7 @@ namespace UserManagementDummy.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+ //   [Authorize]
 
     public class UserRoleController : ControllerBase
     {
@@ -20,15 +20,11 @@ namespace UserManagementDummy.Controllers
             this.context = context;
         }
         [HttpGet]
-        public async Task<IEnumerable<UserRole>> GetUserRoles()
-        {
-            var data = await context.UserRoles.Where(ur => (bool)!ur.IsDeleted).ToListAsync();
-            return data;
-        }
+        
         [HttpGet("{Id}")]
         public async Task<ActionResult<UserRole>> GetUserRoleByID(int Id)
         {
-            var data = await context.UserRoles.Where(x => x.ID == Id).Where(x => x.IsDeleted==false).SingleOrDefaultAsync();
+            var data = await context.UserRoles.FindAsync(Id);
             if (data == null)
             {
                 return NotFound($"Error: There is no non-deleted record with UserRoleID: {Id}");
@@ -99,15 +95,6 @@ namespace UserManagementDummy.Controllers
             {
                 return NotFound($"Error: No record found with UserRoleID: {Id}");
             }
-
-            if ((bool)userRoleToDelete.IsDeleted)
-            {
-                return BadRequest($"Error: The record with UserRoleID {Id} has already been deleted.");
-            }
-
-            userRoleToDelete.IsDeleted = true;
-            userRoleToDelete.DeletedAt = DateTime.UtcNow;
-            userRoleToDelete.DeletedFromIpAddress = HttpContext.Connection.RemoteIpAddress.ToString();
 
             context.Entry(userRoleToDelete).State = EntityState.Modified;
             await context.SaveChangesAsync();

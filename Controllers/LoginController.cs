@@ -22,7 +22,7 @@ namespace UserManagementDummy.Controllers
     {
         private readonly ApplicationContext context;
         private readonly IConfiguration _config;
-        private readonly ILogger<LoginController> _logger;
+        private readonly ILogger<LoginController> _logger;  
 
         public LoginController(ApplicationContext context, IConfiguration config, ILogger<LoginController> logger)
         {

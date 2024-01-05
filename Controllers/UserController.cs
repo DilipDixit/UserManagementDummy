@@ -9,7 +9,7 @@ namespace Prac.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+   // [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly ApplicationContext _context;
